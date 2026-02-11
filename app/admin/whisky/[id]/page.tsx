@@ -1,5 +1,5 @@
 import { use } from 'react'
-import WhiskyForm from '../../../_components/WhiskyForm'
+import WhiskyForm from '../../_components/WhiskyForm'
 
 export default function EditWhiskyPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
