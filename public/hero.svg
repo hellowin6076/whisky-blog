@@ -1,0 +1,74 @@
+<svg width="1200" height="200" viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- 그라데이션 배경 -->
+  <defs>
+    <linearGradient id="whiskyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FEF3C7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FED7AA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1200" height="200" fill="url(#whiskyGradient)"/>
+  
+  <!-- 장식 원들 -->
+  <circle cx="80" cy="50" r="30" fill="#F59E0B" opacity="0.1"/>
+  <circle cx="1120" cy="150" r="40" fill="#D97706" opacity="0.1"/>
+  <circle cx="950" cy="60" r="25" fill="#F59E0B" opacity="0.12"/>
+  <circle cx="180" cy="160" r="35" fill="#D97706" opacity="0.08"/>
+  
+  <!-- 왼쪽 글렌케언 글라스 -->
+  <g transform="translate(150, 60)">
+    <path d="
+      M -18 5
+      L -22 25
+      Q -24 35 -22 45
+      L -18 60
+      L -13 70
+      L -13 78
+      L -22 83
+      L 22 83
+      L 13 78
+      L 13 70
+      L 18 60
+      L 22 45
+      Q 24 35 22 25
+      L 18 5
+      Z
+    " fill="#D97706" opacity="0.5" stroke="#92400E" stroke-width="2"/>
+    <path d="M -16 55 L -12 68 L -12 75 L 12 75 L 12 68 L 16 55 Z" fill="#F59E0B" opacity="0.7"/>
+    <ellipse cx="0" cy="55" rx="16" ry="3" fill="#F59E0B" opacity="0.75"/>
+    <ellipse cx="-15" cy="30" rx="5" ry="18" fill="#FFF" opacity="0.35"/>
+  </g>
+  
+  <!-- 오른쪽 글렌케언 글라스 -->
+  <g transform="translate(1050, 60)">
+    <path d="
+      M -18 5
+      L -22 25
+      Q -24 35 -22 45
+      L -18 60
+      L -13 70
+      L -13 78
+      L -22 83
+      L 22 83
+      L 13 78
+      L 13 70
+      L 18 60
+      L 22 45
+      Q 24 35 22 25
+      L 18 5
+      Z
+    " fill="#D97706" opacity="0.5" stroke="#92400E" stroke-width="2"/>
+    <path d="M -16 55 L -12 68 L -12 75 L 12 75 L 12 68 L 16 55 Z" fill="#F59E0B" opacity="0.7"/>
+    <ellipse cx="0" cy="55" rx="16" ry="3" fill="#F59E0B" opacity="0.75"/>
+    <ellipse cx="-15" cy="30" rx="5" ry="18" fill="#FFF" opacity="0.35"/>
+  </g>
+  
+  <!-- 메인 텍스트 (중앙) -->
+  <text x="600" y="95" font-family="Georgia, serif" font-size="58" font-weight="bold" fill="#92400E" text-anchor="middle">
+    LuvWhisky
+  </text>
+  
+  <text x="600" y="130" font-family="Arial, sans-serif" font-size="20" fill="#78350F" text-anchor="middle" opacity="0.85">
+    위스키 테이스팅 노트 & 컬렉션
+  </text>
+</svg>

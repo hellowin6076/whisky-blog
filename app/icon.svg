@@ -1,0 +1,46 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <circle cx="256" cy="256" r="256" fill="#D97706"/>
+  
+  <!-- 글렌케언 글라스 (더 크게) -->
+  <g transform="translate(256, 156)">
+    <!-- 글라스 외곽선 -->
+    <path d="
+      M -50 15 
+      L -58 65
+      Q -62 90 -58 110
+      L -50 155
+      L -36 180
+      L -36 195
+      L -62 205
+      L 62 205
+      L 36 195
+      L 36 180
+      L 50 155
+      L 58 110
+      Q 62 90 58 65
+      L 50 15
+      Z
+    " fill="#FFF" stroke="#92400E" stroke-width="5" opacity="0.95"/>
+    
+    <!-- 위스키 액체 -->
+    <path d="
+      M -46 140
+      L -34 172
+      L -34 190
+      L 34 190
+      L 34 172
+      L 46 140
+      Z
+    " fill="#F59E0B" opacity="0.75"/>
+    
+    <!-- 액체 표면 -->
+    <ellipse cx="0" cy="140" rx="46" ry="8" fill="#F59E0B" opacity="0.8"/>
+    
+    <!-- 하이라이트 -->
+    <ellipse cx="-45" cy="80" rx="12" ry="40" fill="#FFF" opacity="0.35"/>
+    
+    <!-- 베이스 그림자 -->
+    <ellipse cx="0" cy="205" rx="62" ry="10" fill="#9CA3AF" opacity="0.25"/>
+  </g>
+</svg>

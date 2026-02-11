@@ -48,15 +48,12 @@ export default async function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative h-48 sm:h-64 md:h-80 bg-gradient-to-r from-amber-100 to-orange-100 overflow-hidden">
-        <div className="w-full h-full flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-800 mb-4">
-              🥃
-            </h1>
-            <p className="text-xl sm:text-2xl text-gray-700">LuvWhisky</p>
-          </div>
-        </div>
+      <section className="relative h-32 sm:h-40 md:h-50 overflow-hidden">
+        <img 
+          src="/hero.svg" 
+          alt="LuvWhisky" 
+          className="w-full h-full object-cover"
+        />
       </section>
 
       {/* Recent Posts Section */}
