@@ -30,7 +30,7 @@ export default function WhiskyForm({ whiskyId }: WhiskyFormProps) {
 
   const [title, setTitle] = useState('')
   const [distillery, setDistillery] = useState('')
-  const [type, setType] = useState('싱글몰트')
+  const [category, setCategory] = useState('싱글몰트')
   const [age, setAge] = useState('')
   const [abv, setAbv] = useState('')
   const [rating, setRating] = useState(0)
@@ -57,7 +57,7 @@ export default function WhiskyForm({ whiskyId }: WhiskyFormProps) {
         .then((data) => {
           setTitle(data.title)
           setDistillery(data.distillery || '')
-          setType(data.type)
+          setCategory(data.category)
           setAge(data.age?.toString() || '')
           setAbv(data.abv?.toString() || '')
           setRating(data.rating || 0)
@@ -151,7 +151,7 @@ export default function WhiskyForm({ whiskyId }: WhiskyFormProps) {
         body: JSON.stringify({
           title,
           distillery: distillery || null,
-          type,
+          category,
           age: age || null,
           abv: abv || null,
           rating: rating || null,
@@ -223,8 +223,8 @@ export default function WhiskyForm({ whiskyId }: WhiskyFormProps) {
             타입 *
           </label>
           <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             required
             className="w-full px-4 py-3 md:py-2 border border-gray-300 rounded-lg text-base md:text-sm text-gray-900"
           >
