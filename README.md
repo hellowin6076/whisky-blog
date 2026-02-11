@@ -164,7 +164,7 @@ NEXT_PUBLIC_BASE_URL="https://..."
 ## 🔐 Admin 접속
 
 1. `/admin/login` 접속
-2. 비밀번호 입력: `gmlahr25`
+2. 비밀번호 입력: 
 3. 관리자 페이지 이동
 
 ---
