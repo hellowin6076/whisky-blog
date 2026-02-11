@@ -1,20 +1,30 @@
 import Link from 'next/link'
 import Header from '@/components/Header'
 import WhiskyCard from '@/components/WhiskyCard'
+import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 async function getWhiskies() {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000'
-
-  const res = await fetch(`${baseUrl}/api/whiskies`, {
-    cache: 'no-store',
-  })
-  if (!res.ok) return []
-  return res.json()
+  try {
+    const whiskies = await prisma.whisky.findMany({
+      include: {
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+    return whiskies
+  } catch (error) {
+    console.error('Failed to fetch whiskies:', error)
+    return []
+  }
 }
 
 interface Whisky {
@@ -25,7 +35,7 @@ interface Whisky {
   category: string
   age: number | null
   rating: number | null
-  createdAt: string
+  createdAt: Date
   tags: { tag: { name: string } }[]
 }
 
