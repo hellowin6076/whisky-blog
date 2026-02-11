@@ -41,19 +41,45 @@ interface Whisky {
 
 export default async function HomePage() {
   const whiskies: Whisky[] = await getWhiskies()
-  const recentWhiskies = whiskies.slice(0, 6) // 최신 6개만
+  const recentWhiskies = whiskies.slice(0, 6)
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative h-32 sm:h-40 md:h-50 overflow-hidden">
-        <img 
-          src="/hero.svg" 
-          alt="LuvWhisky" 
-          className="w-full h-full object-cover"
-        />
+      {/* Hero Section - Inline SVG */}
+      <section className="relative h-48 sm:h-64 md:h-80 overflow-hidden">
+        <svg width="1200" height="200" viewBox="0 0 1200 200" className="w-full h-full" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="whiskyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style={{stopColor:'#FEF3C7', stopOpacity:1}} />
+              <stop offset="100%" style={{stopColor:'#FED7AA', stopOpacity:1}} />
+            </linearGradient>
+          </defs>
+          <rect width="1200" height="200" fill="url(#whiskyGradient)"/>
+          <circle cx="80" cy="50" r="30" fill="#F59E0B" opacity="0.1"/>
+          <circle cx="1120" cy="150" r="40" fill="#D97706" opacity="0.1"/>
+          <circle cx="950" cy="60" r="25" fill="#F59E0B" opacity="0.12"/>
+          <circle cx="180" cy="160" r="35" fill="#D97706" opacity="0.08"/>
+          <g transform="translate(150, 60)">
+            <path d="M -18 5 L -22 25 Q -24 35 -22 45 L -18 60 L -13 70 L -13 78 L -22 83 L 22 83 L 13 78 L 13 70 L 18 60 L 22 45 Q 24 35 22 25 L 18 5 Z" fill="#D97706" opacity="0.5" stroke="#92400E" strokeWidth="2"/>
+            <path d="M -16 55 L -12 68 L -12 75 L 12 75 L 12 68 L 16 55 Z" fill="#F59E0B" opacity="0.7"/>
+            <ellipse cx="0" cy="55" rx="16" ry="3" fill="#F59E0B" opacity="0.75"/>
+            <ellipse cx="-15" cy="30" rx="5" ry="18" fill="#FFF" opacity="0.35"/>
+          </g>
+          <g transform="translate(1050, 60)">
+            <path d="M -18 5 L -22 25 Q -24 35 -22 45 L -18 60 L -13 70 L -13 78 L -22 83 L 22 83 L 13 78 L 13 70 L 18 60 L 22 45 Q 24 35 22 25 L 18 5 Z" fill="#D97706" opacity="0.5" stroke="#92400E" strokeWidth="2"/>
+            <path d="M -16 55 L -12 68 L -12 75 L 12 75 L 12 68 L 16 55 Z" fill="#F59E0B" opacity="0.7"/>
+            <ellipse cx="0" cy="55" rx="16" ry="3" fill="#F59E0B" opacity="0.75"/>
+            <ellipse cx="-15" cy="30" rx="5" ry="18" fill="#FFF" opacity="0.35"/>
+          </g>
+          <text x="600" y="95" fontFamily="Georgia, serif" fontSize="58" fontWeight="bold" fill="#92400E" textAnchor="middle">
+            LuvWhisky
+          </text>
+          <text x="600" y="130" fontFamily="Arial, sans-serif" fontSize="20" fill="#78350F" textAnchor="middle" opacity="0.85">
+            위스키 테이스팅 노트 & 컬렉션
+          </text>
+        </svg>
       </section>
 
       {/* Recent Posts Section */}
@@ -74,7 +100,6 @@ export default async function HomePage() {
           </div>
         )}
 
-        {/* All Posts Button */}
         {whiskies.length > 6 && (
           <div className="text-center mt-10 sm:mt-12">
             <Link
@@ -97,7 +122,6 @@ export default async function HomePage() {
             개인적으로 마신 위스키들의 솔직한 감상을 담고 있습니다.
           </p>
           
-          {/* GitHub Link */}
           <a 
             href="https://github.com/hellowin6076" 
             target="_blank" 
