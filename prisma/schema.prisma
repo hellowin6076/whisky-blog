@@ -1,0 +1,59 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["whisky"]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+model Whisky {
+  id           String    @id @default(cuid())
+  title        String    // 위스키 이름
+  slug         String    @unique // title에서 자동 생성
+  distillery   String?   // Talisker
+  category     String    // 싱글몰트, 블렌디드, 버번 등 (type → category로 통일)
+  age          Int?      // 10, 12, null (NAS)
+  abv          Float?    // 45.8
+  rating       Float?    // 0-5
+  coverImage   String?
+  
+  // 테이스팅 노트
+  nose         String?   @db.Text // 향
+  palate       String?   @db.Text // 맛
+  finish       String?   @db.Text // 피니시
+  impression   String?   @db.Text // 추가감상
+  
+  price        Int?      // 4000 (엔화)
+  purchaseDate DateTime?
+  description  String?   @db.Text
+  notes        String?   @db.Text // 기타 메모
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  
+  tags         WhiskyTag[]
+  
+  @@schema("whisky")
+}
+
+model WhiskyTagMaster {
+  id       String      @id @default(cuid())
+  name     String      @unique
+  whiskies WhiskyTag[]
+  
+  @@map("Tag")
+  @@schema("whisky")
+}
+
+model WhiskyTag {
+  whiskyId String
+  tagId    String
+  whisky   Whisky           @relation(fields: [whiskyId], references: [id], onDelete: Cascade)
+  tag      WhiskyTagMaster  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@id([whiskyId, tagId])
+  @@schema("whisky")
+}
