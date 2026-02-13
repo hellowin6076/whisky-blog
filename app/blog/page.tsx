@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Header from '@/components/Header'
 import WhiskyCard from '@/components/WhiskyCard'
 
@@ -16,26 +16,49 @@ interface Whisky {
   tags: { tag: { name: string } }[]
 }
 
+const ITEMS_PER_PAGE = 12
+
 export default function BlogPage() {
   const [whiskies, setWhiskies] = useState<Whisky[]>([])
   const [filteredWhiskies, setFilteredWhiskies] = useState<Whisky[]>([])
+  const [displayedWhiskies, setDisplayedWhiskies] = useState<Whisky[]>([])
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [loading, setLoading] = useState(false)
+  
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedRating, setSelectedRating] = useState<number | null>(null)
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
   
-  // 필터 섹션 열림/닫힘 상태
-  const [showCategoryFilter, setShowCategoryFilter] = useState(true) // 웹: 기본 열림
-  const [showRatingFilter, setShowRatingFilter] = useState(true)
-  const [showTagFilter, setShowTagFilter] = useState(true)
+  // 필터 섹션 열림/닫힘 상태 (기본값: 닫힘)
+  const [showCategoryFilter, setShowCategoryFilter] = useState(false)
+  const [showRatingFilter, setShowRatingFilter] = useState(false)
+  const [showTagFilter, setShowTagFilter] = useState(false)
+
+  const observer = useRef<IntersectionObserver>()
+  const lastWhiskyRef = useCallback((node: HTMLDivElement | null) => {
+    if (loading) return
+    if (observer.current) observer.current.disconnect()
+    
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1)
+      }
+    })
+    
+    if (node) observer.current.observe(node)
+  }, [loading, hasMore])
 
   useEffect(() => {
     async function fetchWhiskies() {
+      setLoading(true)
       const res = await fetch('/api/whiskies', { cache: 'no-store' })
       if (res.ok) {
         const data = await res.json()
         setWhiskies(data)
         setFilteredWhiskies(data)
       }
+      setLoading(false)
     }
     fetchWhiskies()
   }, [])
@@ -46,17 +69,14 @@ export default function BlogPage() {
     new Set(whiskies.flatMap(w => w.tags.map(t => t.tag.name)))
   )
 
-  // 카테고리별 개수
   const getCategoryCount = (category: string) => {
     return whiskies.filter(w => w.category === category).length
   }
 
-  // 평점별 개수
   const getRatingCount = (rating: number) => {
     return whiskies.filter(w => w.rating && Math.round(w.rating) === rating).length
   }
 
-  // 태그별 개수
   const getTagCount = (tag: string) => {
     return whiskies.filter(w => w.tags.some(t => t.tag.name === tag)).length
   }
@@ -78,7 +98,19 @@ export default function BlogPage() {
     }
 
     setFilteredWhiskies(filtered)
+    setPage(1) // 필터 변경 시 첫 페이지로
+    setDisplayedWhiskies([])
   }, [selectedCategory, selectedRating, selectedTag, whiskies])
+
+  // 페이징 (무한 스크롤)
+  useEffect(() => {
+    const startIndex = 0
+    const endIndex = page * ITEMS_PER_PAGE
+    const newDisplayed = filteredWhiskies.slice(startIndex, endIndex)
+    
+    setDisplayedWhiskies(newDisplayed)
+    setHasMore(endIndex < filteredWhiskies.length)
+  }, [page, filteredWhiskies])
 
   const activeFilterCount = [selectedCategory, selectedRating, selectedTag].filter(Boolean).length
 
@@ -231,18 +263,42 @@ export default function BlogPage() {
 
           {/* Whisky Grid */}
           <div className="flex-1">
-            {filteredWhiskies.length === 0 ? (
+            {displayedWhiskies.length === 0 && !loading ? (
               <div className="text-center py-12">
                 <p className="text-gray-500 text-lg">
                   {whiskies.length === 0 ? '아직 위스키가 없습니다.' : '조건에 맞는 위스키가 없습니다.'}
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredWhiskies.map((whisky) => (
-                  <WhiskyCard key={whisky.id} whisky={whisky} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {displayedWhiskies.map((whisky, index) => {
+                    if (displayedWhiskies.length === index + 1) {
+                      return (
+                        <div ref={lastWhiskyRef} key={whisky.id}>
+                          <WhiskyCard whisky={whisky} />
+                        </div>
+                      )
+                    } else {
+                      return <WhiskyCard key={whisky.id} whisky={whisky} />
+                    }
+                  })}
+                </div>
+                
+                {/* 로딩 인디케이터 */}
+                {loading && (
+                  <div className="text-center py-8">
+                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
+                  </div>
+                )}
+                
+                {/* 마지막 페이지 */}
+                {!hasMore && displayedWhiskies.length > 0 && (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">모든 위스키를 불러왔습니다.</p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

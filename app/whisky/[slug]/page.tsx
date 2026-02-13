@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Header from '@/components/Header'
+import DisqusComments from '@/components/DisqusComments'
 
 async function getWhisky(slug: string) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
@@ -204,7 +205,7 @@ export default async function WhiskyPage({
           )}
 
           {/* 목록으로 버튼 */}
-          <div className="text-center">
+          <div className="text-center mb-8">
             <Link
               href="/"
               className="inline-block px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
@@ -212,6 +213,13 @@ export default async function WhiskyPage({
               목록으로 돌아가기
             </Link>
           </div>
+
+          {/* Disqus 댓글 */}
+          <DisqusComments
+            identifier={whisky.id}
+            title={whisky.title}
+            url={`https://whisky-blog-bufgix.vercel.app/whisky/${whisky.slug}`}
+          />
         </article>
       </main>
     </div>
