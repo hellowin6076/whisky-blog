@@ -26,6 +26,7 @@ export default function AdminPage() {
           <h1 className="text-2xl md:text-3xl font-bold">위스키 관리</h1>
           <div className="flex gap-2">
             <Link href="/" className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">사이트 보기</Link>
+            <Link href="/admin/categories" className="px-4 py-2 border border-amber-600 text-amber-600 rounded-lg hover:bg-amber-50">카테고리 관리</Link>
             <Link href="/admin/whisky/new" className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700">+ 새 위스키</Link>
           </div>
         </div>

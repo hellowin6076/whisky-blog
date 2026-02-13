@@ -8,17 +8,11 @@ interface WhiskyFormProps {
   whiskyId?: string
 }
 
-// 위스키 타입 옵션
-const TYPES = [
-  '싱글몰트',
-  '블렌디드',
-  '버번',
-  '라이',
-  '아이리시',
-  '재패니즈',
-  '아메리칸',
-  '기타',
-]
+interface Category {
+  id: string
+  name: string
+  order: number
+}
 
 export default function WhiskyForm({ whiskyId }: WhiskyFormProps) {
   const router = useRouter()
@@ -27,6 +21,10 @@ export default function WhiskyForm({ whiskyId }: WhiskyFormProps) {
   const [loading, setLoading] = useState(false)
   const [fetching, setFetching] = useState(false)
   const [uploading, setUploading] = useState(false)
+  
+  // 동적 카테고리
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loadingCategories, setLoadingCategories] = useState(true)
 
   const [title, setTitle] = useState('')
   const [distillery, setDistillery] = useState('')
@@ -48,6 +46,28 @@ export default function WhiskyForm({ whiskyId }: WhiskyFormProps) {
   
   const [tags, setTags] = useState<string[]>([])
   const [tagInput, setTagInput] = useState('')
+
+  // 카테고리 불러오기
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/categories')
+        const data = await res.json()
+        setCategories(data)
+        
+        // 첫 카테고리를 기본값으로 설정 (새 작성 시)
+        if (!isEditMode && data.length > 0) {
+          setCategory(data[0].name)
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error)
+      } finally {
+        setLoadingCategories(false)
+      }
+    }
+    
+    fetchCategories()
+  }, [isEditMode])
 
   useEffect(() => {
     if (isEditMode && whiskyId) {
@@ -226,13 +246,18 @@ export default function WhiskyForm({ whiskyId }: WhiskyFormProps) {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="w-full px-4 py-3 md:py-2 border border-gray-300 rounded-lg text-base md:text-sm text-gray-900"
+            disabled={loadingCategories}
+            className="w-full px-4 py-3 md:py-2 border border-gray-300 rounded-lg text-base md:text-sm text-gray-900 disabled:bg-gray-100"
           >
-            {TYPES.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
+            {loadingCategories ? (
+              <option>로딩 중...</option>
+            ) : (
+              categories.map((cat) => (
+                <option key={cat.id} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))
+            )}
           </select>
         </div>
 

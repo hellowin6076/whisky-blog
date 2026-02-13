@@ -57,3 +57,12 @@ model WhiskyTag {
   @@id([whiskyId, tagId])
   @@schema("whisky")
 }
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  order     Int      @default(0) // 정렬 순서
+  createdAt DateTime @default(now())
+  
+  @@schema("whisky")
+}
